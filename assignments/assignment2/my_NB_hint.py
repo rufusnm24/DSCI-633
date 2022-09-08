@@ -18,16 +18,27 @@ class my_NB:
         self.classes_ = list(set(list(y)))
         # for calculation of P(y)
         self.P_y = Counter(y)
+        for i in self.P_y:
+            self.P_y[i] = self.P_y[i] /sum(self.P_y.values())
+        #print(self.P_y)
         # self.P[yj][Xi][xi] = P(xi|yj) where Xi is the feature name and xi is the feature value, yj is a specific class label
         # make sure to use self.alpha in the __init__() function as the smoothing factor when calculating P(xi|yj)
-        self.P = {}
+        self.P={}
+        self.features = list(X.columns)
+
+        for outcome in np.unique(y):
+            self.P[outcome] = {}
+            out_count=sum(y==outcome)
+            for feature in self.features:
+                self.P[outcome][feature] = {}
+                #likelihood = X[feature][y[y==outcome].index.values.tolist()].value_counts().to_dict()
+                ni= len(pd.unique(X[feature]))
+                for val in np.unique(X[feature]):
+                    count=X[feature][y==outcome][X[feature]==val].count()
+                    self.P[outcome][feature][val] = (count + self.alpha) / (out_count + (ni * self.alpha))
+        #print(self.P)
 
 
-
-
-
-        
-        return
 
     def predict_proba(self, X):
         # X: pd.DataFrame, independent variables, str
@@ -43,7 +54,9 @@ class my_NB:
             probs[label] = p
         probs = pd.DataFrame(probs, columns=self.classes_)
         sums = probs.sum(axis=1)
+        #print("sum",sums)
         probs = probs.apply(lambda v: v / sums)
+        #print(probs)
         return probs
 
     def predict(self, X):
@@ -51,7 +64,12 @@ class my_NB:
         # return predictions: list
         # Hint: predicted class is the class with highest prediction probability (from self.predict_proba)
         probs = self.predict_proba(X)
-        predictions = "Write your own code"
+        #print(probs)
+        #print((probs.iloc[2]))
+        key = probs.idxmax(axis=1)
+        #print(key)
+        predictions = key.tolist()
+        #print(predictions)
         return predictions
 
 
