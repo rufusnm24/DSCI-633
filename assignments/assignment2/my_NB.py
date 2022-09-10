@@ -18,8 +18,8 @@ class my_NB:
         self.classes_ = list(set(list(y)))
         # for calculation of P(y)
         self.P_y = Counter(y)
-        for i in self.P_y:
-            self.P_y[i] = self.P_y[i] /sum(self.P_y.values())
+        #for i in self.P_y:
+            #self.P_y[i] = self.P_y[i] /sum(self.P_y.values())
         #print(self.P_y)
         # self.P[yj][Xi][xi] = P(xi|yj) where Xi is the feature name and xi is the feature value, yj is a specific class label
         # make sure to use self.alpha in the __init__() function as the smoothing factor when calculating P(xi|yj)
@@ -31,8 +31,8 @@ class my_NB:
             out_count=sum(y==outcome)
             for feature in self.features:
                 self.P[outcome][feature] = {}
-                #likelihood = X[feature][y[y==outcome].index.values.tolist()].value_counts().to_dict()
                 ni= len(pd.unique(X[feature]))
+                #print ni
                 for val in np.unique(X[feature]):
                     count=X[feature][y==outcome][X[feature]==val].count()
                     self.P[outcome][feature][val] = (count + self.alpha) / (out_count + (ni * self.alpha))
