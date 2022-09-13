@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 
+
 class my_KNN:
 
     def __init__(self, n_neighbors=5, metric="minkowski", p=2):
@@ -21,19 +22,20 @@ class my_KNN:
         self.y = y
         return
 
-    def dist(self,x):
+    def dist(self, x):
         # Calculate distances of training data to a single input data point (distances from self.X to x)
         # Output np.array([distances to x])
         if self.metric == "minkowski":
-            distances = "write your own code"
-
+            distances = np.sum(np.abs(self.X-x)**self.p,axis=1)**(1/self.p)
 
         elif self.metric == "euclidean":
-            distances = "write your own code"
+            self.p=2
+            distances = np.sum(np.abs(self.X-x)**self.p,axis=1)**(1/self.p)
 
 
         elif self.metric == "manhattan":
-            distances = "write your own code"
+            self.p=1
+            distances = np.sum(np.abs(self.X-x)**self.p,axis=1)**(1/self.p)
 
 
         elif self.metric == "cosine":
@@ -44,21 +46,21 @@ class my_KNN:
             raise Exception("Unknown criterion.")
         return distances
 
-    def k_neighbors(self,x):
+    def k_neighbors(self, x):
         # Return the stats of the labels of k nearest neighbors to a single input data point (np.array)
         # Output: Counter(labels of the self.n_neighbors nearest neighbors) e.g. {"Class A":3, "Class B":2}
         distances = self.dist(x)
-        output = "write your own code"
-
-
-
+        distances.sort_values(ascending=True,inplace=True)
+        output = Counter(self.y[pd.Series(distances.index)[:self.n_neighbors]])
+        #print(output)
         return output
 
     def predict(self, X):
         # X: pd.DataFrame, independent variables, float
         # return predictions: list
         probs = self.predict_proba(X)
-        predictions = [self.classes_[np.argmax(prob)] for prob in probs.to_numpy()]
+        key = probs.idxmax(axis=1, skipna=True)
+        predictions = key.tolist()
         return predictions
 
     def predict_proba(self, X):
@@ -75,9 +77,13 @@ class my_KNN:
             neighbors = self.k_neighbors(x)
             # Calculate the probability of data point x belonging to each class
             # e.g. prob = {"2": 1/3, "1": 2/3}
-            prob = {"write your own code"}
+            prob={}
+            for val in neighbors:
+                prob[val]=neighbors[val]/self.n_neighbors
             probs.append(prob)
+            #print(probs)
         probs = pd.DataFrame(probs, columns=self.classes_)
+        probs=probs.replace(np.nan,0)
         return probs
 
 
