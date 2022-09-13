@@ -1,4 +1,4 @@
-from my_KNN_hint import my_KNN
+from my_KNN import my_KNN
 import pandas as pd
 
 if __name__ == "__main__":
