@@ -5,7 +5,7 @@ from collections import Counter
 
 class my_KNN:
 
-    def __init__(self, n_neighbors=5, metric="minkowski", p=2):
+    def __init__(self, n_neighbors=5, metric="cosine", p=2):
         # metric = {"minkowski", "euclidean", "manhattan", "cosine"}
         # p value only matters when metric = "minkowski"
         # notice that for "cosine", 1 is closest and -1 is furthest
@@ -39,7 +39,7 @@ class my_KNN:
 
 
         elif self.metric == "cosine":
-            distances = "write your own code"
+            distances = 1 - np.sum(self.X*x, axis=1)/(np.sqrt(np.sum(self.X**2, axis=1))*np.sqrt(np.sum(x**2)))
 
 
         else:
