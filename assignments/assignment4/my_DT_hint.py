@@ -22,22 +22,22 @@ class my_DT:
         # Input is a list (or np.array) of labels
         # Output impurity score
         stats = Counter(labels)
-        N = float(len(labels))
+        count_y = float(sum(stats.values()))
         if self.criterion == "gini":
             # Implement gini impurity
-
-
-
+            impurity = 1
+            for val in stats:
+                impurity = impurity-((stats[val] / count_y) ** 2)
 
         elif self.criterion == "entropy":
             # Implement entropy impurity
-
-
-
+            impurity = 0
+            for val in stats:
+                impurity = impurity-((stats[val] / count_y) * np.log2(stats[val] / count_y))
 
         else:
             raise Exception("Unknown criterion.")
-        return impure
+        return impurity
 
     def find_best_split(self, pop, X, labels):
         # Find the best split
@@ -136,7 +136,9 @@ class my_DT:
                 if type(self.tree[node]) == Counter:               
                     # Calculate prediction probabilities for data point arriving at the leaf node.
                     # predictions = list of prob, e.g. prob = {"2": 1/3, "1": 2/3}
-                    prob = {"write your own code"}
+                    prob={}
+                    for val in self.tree[node]:
+                        prob[val]=self.tree[node][val] / sum(self.tree[node].values())
                     predictions.append(prob)
                     break
                 else:

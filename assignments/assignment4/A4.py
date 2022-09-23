@@ -1,4 +1,4 @@
-from my_DT import my_DT
+from my_DT_hint import my_DT
 import pandas as pd
 
 if __name__ == "__main__":
@@ -18,6 +18,7 @@ if __name__ == "__main__":
     predictions = clf.predict(X_test)
     # Predict probabilities
     probs = clf.predict_proba(X_test)
+    print(predictions)
     # Print results
     for i,pred in enumerate(predictions):
         print("%s\t%f" %(pred, probs[pred][i]))
