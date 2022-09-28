@@ -57,8 +57,6 @@ class my_AdaBoost:
             # Update wi
             w = "write your own code"
 
-        # Normalize alpha
-        self.alpha = self.alpha / np.sum(self.alpha)
         return
 
     def predict(self, X):
