@@ -12,6 +12,14 @@ class my_AdaBoost:
         self.n_estimators = int(n_estimators)
         self.estimators = [deepcopy(self.base_estimator) for i in range(self.n_estimators)]
 
+    def error(self,X, y):
+        w = np.full(len(y), (1 / len(y)))
+        self.estimators.fit(X, y, sample_weight=w)
+        pred = self.estimators.predict(X)
+        error = sum(w * (pred != y))
+        return error;
+
+
     def fit(self, X, y):
         # X: pd.DataFrame, independent variables, float
         # y: list, np.array or pd.Series, dependent variables, int or str
@@ -27,9 +35,7 @@ class my_AdaBoost:
             pred = self.estimators[i].predict(X)
             error = sum(w * (pred != y))
             while(error >= (1-(1/k))):
-                 self.estimators[i].fit(X, y, sample_weight=w)
-                 pred = self.estimators[i].predict(X)
-                 error = sum(w * (pred != y))
+                 error=error(X,y)
             self.alpha[i] = np.log((1 - error) / error) + np.log(k - 1)
             w = w * np.exp(self.alpha[i] * (pred != y))
             w = w / sum(w)
@@ -52,10 +58,10 @@ class my_AdaBoost:
         # return probs = pd.DataFrame(list of prob, columns = self.classes_)
         # write your code below
         probs = {}
-        for label in self.classes_:
-            probs[label] = np.zeros(len(X))
+        for y in self.classes_:
+            probs[y] = np.zeros(len(X))
             for i in range(len(self.estimators)):
-                probs[label] += self.alpha[i] * ((self.estimators[i].predict(X)) == label)
+                probs[y] += self.alpha[i] * ((self.estimators[i].predict(X)) == y)
         probs = pd.DataFrame(probs, columns=self.classes_)
         return probs
 
