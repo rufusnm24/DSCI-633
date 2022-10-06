@@ -36,14 +36,13 @@ class my_KMeans:
 
         elif self.init == "k-means++":
             cluster_centers = []
-            cluster_centers.append(X[np.random.choice(X.shape[0]), :])
+            cluster_centers.append(X[np.random.choice(len(X)), :])
             for i in range(self.n_clusters - 1):
                 distance = []
-                for j in range(X.shape[0]):
-                    point = X[j, :]
+                for j in (X):
                     d = sys.maxsize
-                    for k in range(len(cluster_centers)):
-                        mindist = self.dist(point, cluster_centers[k])
+                    for k in (cluster_centers):
+                        mindist = self.dist(j, k)
                         d = min(d, mindist)
                     distance.append(d)
                 distance = np.array(distance)
