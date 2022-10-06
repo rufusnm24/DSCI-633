@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from pdb import set_trace
-
+import sys
 class my_KMeans:
 
     def __init__(self, n_clusters=8, init = "k-means++", n_init = 10, max_iter=300, tol=1e-4):
@@ -30,12 +30,27 @@ class my_KMeans:
         # Output cluster_centers (list)
 
         if self.init == "random":
-
-            cluster_centers = "write your own code"
+            randomids = np.random.choice(len(X), self.n_clusters, replace=False)
+            cluster_centers = [X[i] for i in randomids]
+            return cluster_centers
 
         elif self.init == "k-means++":
-
-            cluster_centers = "write your own code"
+            cluster_centers = []
+            cluster_centers.append(X[np.random.choice(X.shape[0]), :])
+            for i in range(self.n_clusters - 1):
+                distance = []
+                for j in range(X.shape[0]):
+                    point = X[j, :]
+                    d = sys.maxsize
+                    for k in range(len(cluster_centers)):
+                        mindist = self.dist(point, cluster_centers[k])
+                        d = min(d, mindist)
+                    distance.append(d)
+                distance = np.array(distance)
+                next_cluster_centers = X[np.argmax(distance), :]
+                cluster_centers.append(next_cluster_centers)
+                distance = []
+            return cluster_centers
 
         else:
             raise Exception("Unknown value of self.init.")
@@ -58,17 +73,17 @@ class my_KMeans:
                 # calculate distances between x and each cluster center
                 dists = [self.dist(x, center) for center in cluster_centers]
                 # calculate inertia
-                inertia += "write your own code"
+                inertia += min(dists)**2
                 # find the cluster that x belongs to
-                cluster_id = "write your own code"
+                cluster_id = np.argmin(dists)
                 # add x to that cluster
                 clusters[cluster_id].append(x)
 
             if (last_inertia and last_inertia - inertia < self.tol) or i==self.max_iter:
                 break
-            # Update cluster centers
-
-            cluster_centers = "Write your own code"
+            for clus_id, cluster in enumerate(clusters):
+                clus_mean = np.mean(cluster, axis=0)
+                cluster_centers[clus_id] = clus_mean
 
             last_inertia = inertia
 

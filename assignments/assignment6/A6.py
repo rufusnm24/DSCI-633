@@ -1,4 +1,4 @@
-from my_KMeans import my_KMeans
+from my_KMeans_hint import my_KMeans
 import pandas as pd
 
 if __name__ == "__main__":
