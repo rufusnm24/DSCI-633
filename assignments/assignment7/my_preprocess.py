@@ -88,7 +88,8 @@ class my_pca:
         #     self.principal_components: the top n_components principal_components
         U, s, Vh = svd(X)
         # Write your own code below
-        self.principal_components = Vh[:self.n_components].T
+        VhT=Vh.T
+        self.principal_components = VhT[:, :self.n_components]
 
 
     def transform(self, X):
@@ -115,6 +116,11 @@ def stratified_sampling(y, ratio, replace = True):
         raise Exception("ratio must be 0 < ratio < 1.")
     y_array = np.asarray(y)
     # Write your own code below
+    y_classes = np.unique(y_array)
+    sample = []
+    for y in y_classes:
+        index = np.where(y_array == y)[0]
+        samples = int(np.ceil(ratio * len(index)))
+        sample.extend(np.random.choice(index, samples, replace=replace))
 
-
-    return sample.astype(int)
+    return sample
