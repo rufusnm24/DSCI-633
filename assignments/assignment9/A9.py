@@ -1,7 +1,6 @@
 from my_GA import my_GA
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
-####### import my_evaluation#######
 import sys
 sys.path.insert(0, '../..')
 from assignments.assignment8.my_evaluation import my_evaluation
