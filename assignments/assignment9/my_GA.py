@@ -120,7 +120,7 @@ class my_GA:
         # write your own code below
         if np.all(obj_a <= obj_b) and np.any(obj_a < obj_b):
             return 1
-        else:
+        elif np.all(obj_a >= obj_b) and np.any(obj_a > obj_b):
             return -1
 
     def compete(self, pf_new, pf_best):
