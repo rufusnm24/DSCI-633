@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 from pdb import set_trace
-import random
+
+
 class my_GA:
     # Tuning with Genetic Algorithm for model parameters
 
@@ -119,10 +120,8 @@ class my_GA:
         # write your own code below
         if np.all(obj_a <= obj_b) and np.any(obj_a < obj_b):
             return 1
-        elif np.all(obj_b <= obj_a) and np.any(obj_b < obj_a):
-            return -1
         else:
-            return 0
+            return -1
 
     def compete(self, pf_new, pf_best):
         # Compare and merge two pareto frontiers
@@ -146,7 +145,7 @@ class my_GA:
         for j in range(len(pf_new)):
             not_dominated = True
             for i in range(len(pf_best)):
-                if self.is_better(pf_best[i], pf_new[j]) == 1:
+                if self.is_better(pf_best[i], pf_new[j]) != -1:
                     not_dominated = False
                     break
             if not_dominated:
