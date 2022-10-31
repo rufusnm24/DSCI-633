@@ -104,7 +104,7 @@ class my_GA:
             # Take a mean of each fold of the cross validation result
             # objs_crossval should become an 1-d array of the same size as objs
             objs_crossval = np.array(objs_crossval)
-            self.evaluated[decision] = objs_crossval
+            self.evaluated[decision] = objs_crossval[0]
         return self.evaluated[decision]
 
     def is_better(self, a, b):
