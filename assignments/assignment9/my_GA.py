@@ -122,6 +122,8 @@ class my_GA:
             return 1
         elif np.all(obj_a >= obj_b) and np.any(obj_a > obj_b):
             return -1
+        else:
+            return 0
 
     def compete(self, pf_new, pf_best):
         # Compare and merge two pareto frontiers
