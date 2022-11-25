@@ -22,8 +22,8 @@ class my_model():
         self.vectorizer = TfidfVectorizer(stop_words='english', max_df=0.75, norm='l2')
         train = self.vectorizer.fit_transform(data['text'].astype('U'))
 
-        param_grid = {'C': [0.1, 1, 10, 100, 1000],
-                      'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+        param_grid = {'C': [0.1, 1, 10, 100],
+                      'gamma': [1, 0.1, 0.01, 0.001],
                       'kernel': ['rbf']}
         self.grid = GridSearchCV(svm.SVC(), param_grid, refit=True, verbose=3)
         self.grid.fit(train, y)
